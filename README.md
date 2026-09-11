@@ -2,7 +2,7 @@
 
 > A modern, interactive web application designed to help developers explore, compare, and compose their ideal software technology stacks.
 
-🔗 **Live Link:** [dev-stack-5.vercel.app](https://dev-stack-5.vercel.app)
+🔗 **Live Link:** [DevStack](https://dev-stack-5.vercel.app)
 
 ---
 
