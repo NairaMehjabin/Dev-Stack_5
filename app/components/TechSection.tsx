@@ -7,12 +7,35 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Technology } from "@/types/tech";
 
+const getBadgeStyle = (badge?: string) => {
+  switch (badge?.toLowerCase()) {
+    case "popular":
+      return "bg-sky-50 text-sky-500 border-sky-100";
+    case "versatile":
+    case "standard":
+    case "modern":
+      return "bg-emerald-50 text-emerald-500 border-emerald-100";
+    case "fast":
+    case "ubiquitous":
+    case "robust":
+      return "bg-amber-50 text-amber-600 border-amber-100";
+    case "ssr / edge":
+    case "cache":
+    case "containers":
+      return "bg-rose-50 text-rose-500 border-rose-100";
+    case "top sql":
+    case "essential":
+      return "bg-blue-50 text-blue-500 border-blue-100";
+    default:
+      return "bg-slate-50 text-slate-600 border-slate-100";
+  }
+};
+
 export default function TechSection() {
   const [technologies, setTechnologies] = useState<Technology[]>([]);
   const [selectedStack, setSelectedStack] = useState<Technology[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Fetch JSON data via useEffect
   useEffect(() => {
     const fetchTechData = async () => {
       try {
@@ -30,7 +53,6 @@ export default function TechSection() {
     fetchTechData();
   }, []);
 
-  // Handler: Add to Stack
   const handleAddToStack = (tech: Technology) => {
     const exists = selectedStack.some((item) => item.id === tech.id);
     if (exists) {
@@ -46,7 +68,6 @@ export default function TechSection() {
     });
   };
 
-  // Handler: Remove single item
   const handleRemoveFromStack = (id: string, name: string) => {
     setSelectedStack((prev) => prev.filter((item) => item.id !== id));
     toast.info(`Removed ${name} from your stack.`, {
@@ -54,7 +75,6 @@ export default function TechSection() {
     });
   };
 
-  // Handler: Remove All
   const handleRemoveAll = () => {
     if (selectedStack.length === 0) return;
     setSelectedStack([]);
@@ -68,17 +88,15 @@ export default function TechSection() {
       <ToastContainer autoClose={2500} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Heading */}
-        <div className="mb-10 text-left">
+        <div className="mb-10 text-center lg:text-left">
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
             Explore the <span className="text-brand-gradient">Technologies</span>
           </h2>
-          <p className="text-slate-500 text-sm sm:text-base mt-1 font-medium">
+          <p className="text-slate-500 text-sm sm:text-base mt-2 font-medium max-w-lg mx-auto lg:mx-0">
             Pick one technology per category to build your ideal stack.
           </p>
         </div>
 
-        {/* Loading State Requirement */}
         {isLoading ? (
           <div className="flex flex-col items-center justify-center py-20 space-y-3">
             <Loader2 className="w-10 h-10 animate-spin text-[#ec4899]" />
@@ -87,7 +105,7 @@ export default function TechSection() {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            {/* Left: Technology Cards Grid (3 Columns on Desktop, 2 on Tablet) */}
+            {/* Tech Cards */}
             <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
               {technologies.map((tech) => {
                 const isSelected = selectedStack.some((item) => item.id === tech.id);
@@ -98,7 +116,6 @@ export default function TechSection() {
                     className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
                   >
                     <div>
-                      {/* Top Bar: Icon & Badge */}
                       <div className="flex items-center justify-between mb-4">
                         <div className="relative w-10 h-10 flex items-center justify-center rounded-xl bg-slate-50 p-1">
                           <Image
@@ -111,19 +128,21 @@ export default function TechSection() {
                         </div>
 
                         {tech.badge && (
-                          <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full border border-sky-200 text-sky-600 bg-sky-50/50">
+                          <span
+                            className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${getBadgeStyle(
+                              tech.badge
+                            )}`}
+                          >
                             {tech.badge}
                           </span>
                         )}
                       </div>
 
-                      {/* Name & Description */}
                       <h3 className="text-lg font-bold text-slate-900">{tech.name}</h3>
                       <p className="text-xs text-slate-500 mt-1.5 leading-relaxed line-clamp-3">
                         {tech.description}
                       </p>
 
-                      {/* Category, Difficulty & Rating */}
                       <div className="flex items-center gap-2 mt-4 text-[11px] text-slate-500 font-medium flex-wrap">
                         <span className="bg-slate-100 px-2 py-0.5 rounded-md text-slate-600">
                           {tech.category}
@@ -138,7 +157,6 @@ export default function TechSection() {
                       </div>
                     </div>
 
-                    {/* Action Button */}
                     <div className="mt-5">
                       <button
                         onClick={() => handleAddToStack(tech)}
@@ -165,11 +183,9 @@ export default function TechSection() {
               })}
             </div>
 
-            {/* Right: Your Stack Sidebar */}
+            {/* Your Stack */}
             <div className="lg:col-span-4 sticky top-24">
               <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm space-y-4">
-                
-                {/* Header */}
                 <div>
                   <h3 className="text-lg font-bold text-slate-900">Your Stack</h3>
                   <p className="text-xs text-slate-400 mt-0.5 font-medium">
@@ -179,16 +195,13 @@ export default function TechSection() {
                   </p>
                 </div>
 
-                {/* Conditional Rendering State */}
                 {selectedStack.length === 0 ? (
-                  /* Empty State */
                   <div className="border border-dashed border-slate-200 rounded-2xl p-8 text-center bg-slate-50/50">
                     <p className="text-xs font-medium text-slate-400">
                       Your stack is empty.
                     </p>
                   </div>
                 ) : (
-                  /* Selected Items List */
                   <div className="space-y-3">
                     <div className="space-y-2.5 max-h-[420px] overflow-y-auto pr-1 custom-scrollbar">
                       {selectedStack.map((item) => (
@@ -226,7 +239,6 @@ export default function TechSection() {
                       ))}
                     </div>
 
-                    {/* Clear All Button */}
                     <button
                       onClick={handleRemoveAll}
                       type="button"
@@ -236,7 +248,6 @@ export default function TechSection() {
                     </button>
                   </div>
                 )}
-
               </div>
             </div>
 
