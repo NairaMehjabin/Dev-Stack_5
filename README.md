@@ -31,40 +31,30 @@ DevStack simplifies the process of discovering and evaluating modern web tools. 
 
 ## 💡 React Concept Answers
 
-### What is JSX, and why is it used in React?
-JSX stands for JavaScript XML. It’s a syntax extension that lets us write HTML-like markup directly inside our JavaScript code. It makes building UI components much cleaner and more intuitive because you can keep your structure and visual logic together in one place.
+### 1. What is JSX, and why is it used in React?
 
-### What is the difference between props and state?
-* **Props** (short for properties) are read-only inputs passed down from a parent component to a child component. The receiving component can't modify them directly.
-* **State** is internal data managed directly inside a component. Unlike props, state can change over time based on user interactions or API updates, causing the component to re-render when it does.
+> JSX lets us write HTML-like code inside JavaScript. It makes building React components easier and more readable.
 
-### What does the `useState` hook do, and where did you use it in this project?
-The `useState` hook lets a functional component preserve and update local state values across re-renders. 
+### 2. What is the difference between props and state?
 
-In this project, it was used in `TechSection.tsx` to keep track of two things:
-1. `technologies`: The list of tech cards retrieved from our JSON file.
-2. `selectedStack`: The array of technologies the user adds to their personal stack sidebar.
+> Props are data sent from a parent component to a child component. State is data managed inside a component and can change over time.
 
-### What does the `useEffect` hook do, and why did you need it to load the JSON data?
-`useEffect` handles side effects in React components, like fetching external data, setting up event listeners, or modifying the DOM. 
+### 3. What does the useState hook do, and where did you use it in this project?
 
-We used it to handle fetching our local tech data from `/data/technologies.json` as soon as the component mounts onto the page, ensuring our UI renders smooth loading states while waiting for data.
+> useState is used to store and update data inside a component. In this project, I used it to store the technology list and the selected technologies in the stack.
 
-### Why does every item in a `.map()` list need a unique `key` prop?
-React needs unique keys to keep track of individual DOM nodes when lists change, get re-ordered, or have items removed. Giving each item a unique `key` (like `tech.id`) helps React pinpoint exactly which item changed so it only updates that single element instead of re-rendering the whole list.
+### 4. What does the useEffect hook do, and why did you need it to load the JSON data?
 
-### What is conditional rendering? Show one place you used it.
-Conditional rendering means showing or hiding UI elements based on specific states or logical conditions. 
+> useEffect runs code after a component renders. I used it to load the technology data from the JSON file when the page loads.
 
-In our stack sidebar, we used conditional rendering to show an empty state message whenever no tools are selected yet:
+### 5. Why does every item in a .map() list need a unique key prop?
 
-```tsx
-{selectedStack.length === 0 ? (
-  <div className="border border-dashed border-slate-200 rounded-2xl p-8 text-center bg-slate-50/50">
-    <p className="text-xs font-medium text-slate-400">
-      Your stack is empty.
-    </p>
-  </div>
-) : (
-  {/* Render Selected Tech List & Clear All Button */}
-)}
+> A unique key helps React identify each item in a list and update the UI efficiently.
+
+### 6. What is conditional rendering? Show one place you used it.
+
+> Conditional rendering means showing different content based on a condition. I used it in the stack sidebar to show an empty message when no technology is selected.
+
+### 7. How do you pass data from a parent component to a child component, and how does a child send something back to the parent?
+
+> Data is passed from a parent to a child using props. A child component can send data back by calling a function passed through props.
